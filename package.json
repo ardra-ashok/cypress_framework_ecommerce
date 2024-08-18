@@ -1,0 +1,18 @@
+{
+  "name": "cypress_framework_2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cypress run",
+    "headTest": "npx cypress open",
+    "record": "npx cypress run --record --key 9270ddf3-2b6a-4ec1-ad33-642f03d2b83c",
+    "chromeTest": "npx cypress run test --browser chrome",
+    "projectName": "npx cypress run --spec \"cypress/integration/projectName/*\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^13.13.3"
+  }
+}
