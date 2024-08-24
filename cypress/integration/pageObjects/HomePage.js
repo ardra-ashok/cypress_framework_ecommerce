@@ -32,6 +32,9 @@ class HomePage {
   get_whatsNew() {
     return cy.get('#ui-id-3');
   }
+  get_womens() {
+    return cy.get('#ui-id-4 > :nth-child(2)')
+  }
 }
 
 export default HomePage
