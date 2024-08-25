@@ -8,6 +8,10 @@ class WomensPage {
  get_searchTitle() {
   return cy.get('.page-title-wrapper h1')
  }
+ get_productName() {
+  return cy.get('.product-item-info .product-item-name .product-item-link')
+ }
+ 
 }
 
 export default WomensPage

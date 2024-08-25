@@ -1,9 +1,9 @@
 class HomePage {
   get_logo() {
-    return cy.get('.logo > img')
+    return cy.get('.logo img')
   }
   get_title() {
-    return cy.get('.home-main .content .info')
+    return cy.get('.info:first-child')
   }
   get_navTitle() {
     return cy.get('#ui-id-3 span')
