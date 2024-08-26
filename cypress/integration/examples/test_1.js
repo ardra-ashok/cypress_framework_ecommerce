@@ -1,6 +1,8 @@
 import HomePage from '../pageObjects/HomePage'
 import UpdatesPage from '../pageObjects/UpdatesPage'
 import WomensPage from '../pageObjects/WomensPage'
+import CartPage from '../pageObjects/CartPage'
+import CheckOutPage from '../pageObjects/CheckOutPage'
 
 describe('Home Page Functionality', function () {
    before(function () {
@@ -12,6 +14,9 @@ describe('Home Page Functionality', function () {
     const homePage = new HomePage()
     const updatesPage = new UpdatesPage()
     const womensPage = new WomensPage()
+    const cartPage = new CartPage()
+    const checkoutPage = new CheckOutPage()
+
     cy.visit(Cypress.env('url'))
     cy.url().should('eq', 'https://magento.softwaretestingboard.com/')
     homePage.get_logo().should('exist')
@@ -66,6 +71,22 @@ describe('Home Page Functionality', function () {
       })
     this.data.products.forEach((prod) => {
        cy.selectProduct(prod)
-     })
+    })
+    womensPage.get_cartButton().click()
+    womensPage.get_proceedToCheckOut().click()
+    cy.url().should('include','checkout')
+    checkoutPage.get_page_title().should('have.text', 'Shipping Address')
+    checkoutPage.get_emailInput().type('test@automation.com');
+    checkoutPage.get_firstNameInput().type('Test');
+    checkoutPage.get_lastNameInput().type('Name');
+    checkoutPage.get_companyNameInput().type('Test company');
+    checkoutPage.get_addressInput().type('Test Address');
+    checkoutPage.get_cityInput().type('Test City');
+    checkoutPage.get_regionSelect().select('Georgia')
+    checkoutPage.get_zipCode().type('234421')
+    checkoutPage.get_countrySelect().select('United States')
+    checkoutPage.get_phoneInput().type('12345671') // ---------------
+    // checkoutPage.get_shippingCost().check();
+    // checkoutPage.get_continueBtn().click()
   })
 })

@@ -11,7 +11,12 @@ class WomensPage {
  get_productName() {
   return cy.get('.product-item-info .product-item-name .product-item-link')
  }
- 
+ get_cartButton() {
+  return cy.get('.minicart-wrapper')
+ }
+ get_proceedToCheckOut() {
+  return cy.get('#top-cart-btn-checkout')
+ }
 }
 
 export default WomensPage
