@@ -1,4 +1,19 @@
 {
+  "purchaser_details":{
+    "email": "test@automation.com",
+    "first_name": "firstName",
+    "last_name": "lastName",
+    "company": "test Company",
+    "address": "101 testAddress",
+    "city": "cityName",
+    "region": "Virginia",
+    "zip_code": "23455",
+    "country": "United States",
+    "phone": "1571265378"
+  },
+
+  
+
   "products": [
     {
       "name": "Leah Yoga Top",

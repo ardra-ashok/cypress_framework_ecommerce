@@ -6,11 +6,11 @@ import CheckOutPage from '../pageObjects/CheckOutPage'
 import PaymentsPage from '../pageObjects/PaymentsPage'
 
 describe('Home Page Functionality', function () {
-   before(function () {
-     cy.fixture('example').then(function (data) {
-       this.data = data
-     })
-   })
+  before(function () {
+    cy.fixture('example').then(function (data) {
+      this.data = data
+    })
+  })
   it('Verify Home Page Functionality', function () {
     const homePage = new HomePage()
     const updatesPage = new UpdatesPage()
@@ -31,12 +31,10 @@ describe('Home Page Functionality', function () {
       })
     // homePage.get_mainTitle().should('be.visible').contains('Get fit and')
 
-    homePage
-      .get_mainTitle()
-      .then(($el) => {
-        cy.log($el.text())
-        expect($el.text().trim()).to.include('Get fit and')
-      })
+    homePage.get_mainTitle().then(($el) => {
+      cy.log($el.text())
+      expect($el.text().trim()).to.include('Get fit and')
+    })
 
     homePage.get_navTitle().should('have.text', "What's New")
     homePage.get_navTitle_1().should('have.text', 'Women')
@@ -72,28 +70,37 @@ describe('Home Page Functionality', function () {
         expect(text.trim()).to.match(/Search results for:\s*'tees and tops'/i)
       })
     this.data.products.forEach((prod) => {
-       cy.selectProduct(prod)
+      cy.selectProduct(prod)
     })
     womensPage.get_cartButton().click()
     womensPage.get_proceedToCheckOut().click()
-    cy.url().should('include','checkout')
+    cy.url().should('include', 'checkout')
     checkoutPage.get_page_title().should('have.text', 'Shipping Address')
-    checkoutPage.get_emailInput().type('test@automation.com')
-    checkoutPage.get_firstNameInput().type('Test')
-    checkoutPage.get_lastNameInput().type('Name')
-    checkoutPage.get_companyNameInput().type('Test company')
-    checkoutPage.get_addressInput().type('Test Address')
-    checkoutPage.get_cityInput().type('Test City')
-    checkoutPage.get_regionSelect().select('Georgia')
-    checkoutPage.get_zipCode().type('234421')
-    checkoutPage.get_countrySelect().select('United States')
-    checkoutPage.get_phoneInput().type('12345671') // ---------------
+    checkoutPage.get_emailInput().type(this.data.purchaser_details.email)
+    checkoutPage
+      .get_firstNameInput()
+      .type(this.data.purchaser_details.first_name)
+    checkoutPage.get_lastNameInput().type(this.data.purchaser_details.last_name)
+    checkoutPage
+      .get_companyNameInput()
+      .type(this.data.purchaser_details.company)
+    checkoutPage.get_addressInput().type(this.data.purchaser_details.address)
+    checkoutPage.get_cityInput().type(this.data.purchaser_details.city)
+    checkoutPage.get_regionSelect().select(this.data.purchaser_details.region)
+    checkoutPage.get_zipCode().type(this.data.purchaser_details.zip_code)
+    checkoutPage.get_countrySelect().select(this.data.purchaser_details.country)
+    checkoutPage.get_phoneInput().type(this.data.purchaser_details.phone) // ---------------
     checkoutPage.get_shippingCost().check()
     checkoutPage.get_continueBtn().click()
-    cy.url().should('include','payment')
-    paymentsPage.get_paymenentsPage_title().should('have.text', 'Payment Method')
+    cy.url().should('include', 'payment')
+    paymentsPage
+      .get_paymenentsPage_title()
+      .should('have.text', 'Payment Method')
     paymentsPage.get_cartSection_title('have.text', 'Order Summary')
     paymentsPage.get_PlaceOrderBtn().click()
-    paymentsPage.get_PaymentSuccess_msg('have.text', 'Thank you for your purchase!')
+    paymentsPage.get_PaymentSuccess_msg(
+      'have.text',
+      'Thank you for your purchase!'
+    )
   })
 })
