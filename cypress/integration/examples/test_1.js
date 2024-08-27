@@ -3,6 +3,7 @@ import UpdatesPage from '../pageObjects/UpdatesPage'
 import WomensPage from '../pageObjects/WomensPage'
 import CartPage from '../pageObjects/CartPage'
 import CheckOutPage from '../pageObjects/CheckOutPage'
+import PaymentsPage from '../pageObjects/PaymentsPage'
 
 describe('Home Page Functionality', function () {
    before(function () {
@@ -16,6 +17,7 @@ describe('Home Page Functionality', function () {
     const womensPage = new WomensPage()
     const cartPage = new CartPage()
     const checkoutPage = new CheckOutPage()
+    const paymentsPage = new PaymentsPage()
 
     cy.visit(Cypress.env('url'))
     cy.url().should('eq', 'https://magento.softwaretestingboard.com/')
@@ -76,17 +78,22 @@ describe('Home Page Functionality', function () {
     womensPage.get_proceedToCheckOut().click()
     cy.url().should('include','checkout')
     checkoutPage.get_page_title().should('have.text', 'Shipping Address')
-    checkoutPage.get_emailInput().type('test@automation.com');
-    checkoutPage.get_firstNameInput().type('Test');
-    checkoutPage.get_lastNameInput().type('Name');
-    checkoutPage.get_companyNameInput().type('Test company');
-    checkoutPage.get_addressInput().type('Test Address');
-    checkoutPage.get_cityInput().type('Test City');
+    checkoutPage.get_emailInput().type('test@automation.com')
+    checkoutPage.get_firstNameInput().type('Test')
+    checkoutPage.get_lastNameInput().type('Name')
+    checkoutPage.get_companyNameInput().type('Test company')
+    checkoutPage.get_addressInput().type('Test Address')
+    checkoutPage.get_cityInput().type('Test City')
     checkoutPage.get_regionSelect().select('Georgia')
     checkoutPage.get_zipCode().type('234421')
     checkoutPage.get_countrySelect().select('United States')
     checkoutPage.get_phoneInput().type('12345671') // ---------------
-    // checkoutPage.get_shippingCost().check();
-    // checkoutPage.get_continueBtn().click()
+    checkoutPage.get_shippingCost().check()
+    checkoutPage.get_continueBtn().click()
+    cy.url().should('include','payment')
+    paymentsPage.get_paymenentsPage_title().should('have.text', 'Payment Method')
+    paymentsPage.get_cartSection_title('have.text', 'Order Summary')
+    paymentsPage.get_PlaceOrderBtn().click()
+    paymentsPage.get_PaymentSuccess_msg('have.text', 'Thank you for your purchase!')
   })
 })
