@@ -14,6 +14,9 @@ class PaymentsPage{
  get_emailAddress() {
   return cy.get('span[data-bind="text: getEmailAddress()"]')
  }
+ get_billingDetails() {
+  return cy.get('.billing-address-details')
+ }
 }
 
 export default PaymentsPage

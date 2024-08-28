@@ -108,6 +108,13 @@ describe('Home Page Functionality', function () {
     paymentsPage
       .get_paymenentsPage_title()
       .should('have.text', 'Payment Method')
+    
+    paymentsPage
+      .get_billingDetails()
+      .should('contain', this.data.purchaser_details.first_name)
+    paymentsPage
+      .get_billingDetails()
+      .should('contain', this.data.purchaser_details.address)
     paymentsPage.get_cartSection_title('have.text', 'Order Summary')
     paymentsPage.get_PlaceOrderBtn().click()
     paymentsPage.get_PaymentSuccess_msg(
