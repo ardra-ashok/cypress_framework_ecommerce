@@ -11,6 +11,10 @@ describe('Home Page Functionality', function () {
       this.data = data
     })
   })
+  after(() => {
+    cy.log('All tests are done. ');
+    Cypress.runner.stop() 
+  });
   it('Verify Home Page Functionality', function () {
     const homePage = new HomePage()
     const updatesPage = new UpdatesPage()
@@ -95,12 +99,23 @@ describe('Home Page Functionality', function () {
     checkoutPage.get_orderSummary_title().should('have.text', 'Order Summary')
     checkoutPage.get_orderSummary().click()
     this.data.products.forEach((product, index) => {
-      checkoutPage.get_cartItems().eq(index).within(() => {
-        checkoutPage.get_productItemName().should('have.text', product.name)
-        checkoutPage.get_toggleElem().click({force:true})
-        checkoutPage.get_productSize().contains('Size').next().should('have.text',product.size)
-        checkoutPage.get_productColor().contains('Color').next().should('have.text',product.color)
-      })
+      checkoutPage
+        .get_cartItems()
+        .eq(index)
+        .within(() => {
+          checkoutPage.get_productItemName().should('have.text', product.name)
+          checkoutPage.get_toggleElem().click({ force: true })
+          checkoutPage
+            .get_productSize()
+            .contains('Size')
+            .next()
+            .should('have.text', product.size)
+          checkoutPage
+            .get_productColor()
+            .contains('Color')
+            .next()
+            .should('have.text', product.color)
+        })
     })
     checkoutPage.get_shippingCost().check()
     checkoutPage.get_continueBtn().click()
@@ -108,7 +123,7 @@ describe('Home Page Functionality', function () {
     paymentsPage
       .get_paymenentsPage_title()
       .should('have.text', 'Payment Method')
-    
+
     paymentsPage
       .get_billingDetails()
       .should('contain', this.data.purchaser_details.first_name)
@@ -125,4 +140,7 @@ describe('Home Page Functionality', function () {
       .get_emailAddress()
       .should('have.text', this.data.purchaser_details.email)
   })
+  // it('stops on skip', function () {
+  //   cy.then(() => this.skip()) 
+  // })
 })
