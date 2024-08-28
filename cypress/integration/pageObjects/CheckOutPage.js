@@ -38,6 +38,28 @@ class CheckOutPage {
  get_continueBtn(){
   return cy.get('.continue')
  }
+  get_orderSummary_title() {
+    return cy.get('.opc-block-summary span.title')
+  }
+  get_orderSummary() {
+    return cy.get('.block .title')
+  }
+  get_cartItems() {
+    return cy.get('.product-item')
+  }
+  get_productItemName() {
+    return cy.get('.product-item-name')
+  }
+  get_toggleElem() {
+    return cy.get('span.toggle')
+  }
+  get_productSize() {
+    return cy.get('.label:first-of-type')
+  }
+  get_productColor() {
+    return cy.get('.label:nth-of-type(2)')
+  }
+
 }
 
 

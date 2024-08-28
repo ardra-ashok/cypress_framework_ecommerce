@@ -6,8 +6,8 @@ Cypress.Commands.add('selectProduct', (product) => {
   // })
   cy.contains('.product-item-info', product.name).within(() => {
     cy.wait(1000)
-    cy.get('div[aria-describedby^="option-label-size"]')
-      .contains(product.size)
+    cy.get('div[aria-label="Size"]')
+      .find(`div[aria-label="${product.size}"]`)
       .click()
     cy.get('div[aria-label="Color"]')
       .find(`div[aria-label="${product.color}"]`)
@@ -19,5 +19,6 @@ Cypress.Commands.add('selectProduct', (product) => {
 
   cy.get('.message-success').should(
     'contain',
-    `You added ${product.name} to your shopping cart.`)
+    `You added ${product.name} to your shopping cart.`
+  )
 })

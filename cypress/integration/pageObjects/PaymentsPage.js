@@ -11,6 +11,9 @@ class PaymentsPage{
  get_PaymentSuccess_msg() {
   return cy.get('.base')
  }
+ get_emailAddress() {
+  return cy.get('span[data-bind="text: getEmailAddress()"]')
+ }
 }
 
 export default PaymentsPage

@@ -74,6 +74,7 @@ describe('Home Page Functionality', function () {
     })
     womensPage.get_cartButton().click()
     womensPage.get_proceedToCheckOut().click()
+    cy.wait(1000)
     cy.url().should('include', 'checkout')
     checkoutPage.get_page_title().should('have.text', 'Shipping Address')
     checkoutPage.get_emailInput().type(this.data.purchaser_details.email)
@@ -89,7 +90,18 @@ describe('Home Page Functionality', function () {
     checkoutPage.get_regionSelect().select(this.data.purchaser_details.region)
     checkoutPage.get_zipCode().type(this.data.purchaser_details.zip_code)
     checkoutPage.get_countrySelect().select(this.data.purchaser_details.country)
-    checkoutPage.get_phoneInput().type(this.data.purchaser_details.phone) // ---------------
+    checkoutPage.get_phoneInput().type(this.data.purchaser_details.phone)
+    cy.wait(1000)
+    checkoutPage.get_orderSummary_title().should('have.text', 'Order Summary')
+    checkoutPage.get_orderSummary().click()
+    this.data.products.forEach((product, index) => {
+      checkoutPage.get_cartItems().eq(index).within(() => {
+        checkoutPage.get_productItemName().should('have.text', product.name)
+        checkoutPage.get_toggleElem().click({force:true})
+        checkoutPage.get_productSize().contains('Size').next().should('have.text',product.size)
+        checkoutPage.get_productColor().contains('Color').next().should('have.text',product.color)
+      })
+    })
     checkoutPage.get_shippingCost().check()
     checkoutPage.get_continueBtn().click()
     cy.url().should('include', 'payment')
@@ -102,5 +114,8 @@ describe('Home Page Functionality', function () {
       'have.text',
       'Thank you for your purchase!'
     )
+    paymentsPage
+      .get_emailAddress()
+      .should('have.text', this.data.purchaser_details.email)
   })
 })
