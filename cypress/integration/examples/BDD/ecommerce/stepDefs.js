@@ -104,7 +104,6 @@ Then('I add the shipping details for delivery', function () {
 Then('I proceed to checkout and verify purchase successful', function() {
   cy.url().should('include', 'payment')
   paymentsPage.get_paymenentsPage_title().should('have.text', 'Payment Method')
-
   paymentsPage
     .get_billingDetails()
     .should('contain', this.data.purchaser_details.first_name)
