@@ -119,6 +119,7 @@ describe('Home Page Functionality', function () {
     })
     checkoutPage.get_shippingCost().check()
     checkoutPage.get_continueBtn().click()
+    // ----
     cy.url().should('include', 'payment')
     paymentsPage
       .get_paymenentsPage_title()

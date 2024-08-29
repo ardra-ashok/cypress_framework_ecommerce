@@ -14,5 +14,9 @@
   "description": "",
   "devDependencies": {
     "cypress": "^13.13.3"
+  },
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^20.1.2",
+    "@cypress/browserify-preprocessor": "^3.0.2"
   }
 }
