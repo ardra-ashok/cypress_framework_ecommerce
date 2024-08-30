@@ -123,15 +123,21 @@ describe('Ecommerce Shopping', function () {
     cy.url().should('include', 'payment')
     paymentsPage.get_cartItemPrice()
       .each(($el) => {
-        const priceText = $el.text().trim().replace('$', '') // Remove the dollar sign
-        itemPrices.push(parseFloat(priceText)) // Parse the price as a float and add to the array
+        const priceText = $el.text().trim().replace('$', '') 
+        itemPrices.push(parseFloat(priceText))
       })
       .then(() => {
-        const expectedTotal = itemPrices.reduce((acc, price) => acc + price, 0)
-        paymentsPage.get_totalPrice().then(($total) => {
-          const totalText = $total.text().trim().replace('$', '')
-          const actualTotal = parseFloat(totalText)
-          expect(actualTotal).to.eq(expectedTotal)
+        const expectedItemsTotal = itemPrices.reduce((acc, price) => acc + price, 0)
+
+        cy.get('.shipping .amount .price').then(($shipping) => {
+          const shippingText = $shipping.text().trim().replace('$', '');
+          const shippingCost = parseFloat(shippingText);
+          const expectedTotalWithShipping = expectedItemsTotal + shippingCost;
+          paymentsPage.get_totalPrice().then(($total) => {
+            const totalText = $total.text().trim().replace('$', '')
+            const actualTotal = parseFloat(totalText)
+            expect(actualTotal).to.eq(expectedTotalWithShipping)
+          })
         })
       })
 
