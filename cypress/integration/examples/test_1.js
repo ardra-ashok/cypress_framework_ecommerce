@@ -5,7 +5,7 @@ import CartPage from '../pageObjects/CartPage'
 import CheckOutPage from '../pageObjects/CheckOutPage'
 import PaymentsPage from '../pageObjects/PaymentsPage'
 
-describe('Home Page Functionality', function () {
+describe('Ecommerce Shopping', function () {
   before(function () {
     cy.fixture('example').then(function (data) {
       this.data = data
@@ -16,6 +16,7 @@ describe('Home Page Functionality', function () {
     Cypress.runner.stop() 
   });
   it('Verify Home Page Functionality', function () {
+    let itemPrices = [];
     const homePage = new HomePage()
     const updatesPage = new UpdatesPage()
     const womensPage = new WomensPage()
@@ -120,6 +121,20 @@ describe('Home Page Functionality', function () {
     checkoutPage.get_shippingCost().check()
     checkoutPage.get_continueBtn().click()
     cy.url().should('include', 'payment')
+    paymentsPage.get_cartItemPrice()
+      .each(($el) => {
+        const priceText = $el.text().trim().replace('$', '') // Remove the dollar sign
+        itemPrices.push(parseFloat(priceText)) // Parse the price as a float and add to the array
+      })
+      .then(() => {
+        const expectedTotal = itemPrices.reduce((acc, price) => acc + price, 0)
+        paymentsPage.get_totalPrice().then(($total) => {
+          const totalText = $total.text().trim().replace('$', '')
+          const actualTotal = parseFloat(totalText)
+          expect(actualTotal).to.eq(expectedTotal)
+        })
+      })
+
     paymentsPage
       .get_paymenentsPage_title()
       .should('have.text', 'Payment Method')
@@ -139,7 +154,4 @@ describe('Home Page Functionality', function () {
       .get_emailAddress()
       .should('have.text', this.data.purchaser_details.email)
   })
-  // it('stops on skip', function () {
-  //   cy.then(() => this.skip()) 
-  // })
 })

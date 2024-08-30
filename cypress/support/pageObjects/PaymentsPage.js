@@ -17,6 +17,14 @@ class PaymentsPage{
  get_billingDetails() {
   return cy.get('.billing-address-details')
  }
+ get_cartItemPrice() {
+  return cy.get('.cart-price .price')
+ }
+
+ get_totalPrice() {
+  return cy.get('.grand.totals .price')
+ }
+
 }
 
 export default PaymentsPage

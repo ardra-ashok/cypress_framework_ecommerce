@@ -1,9 +1,4 @@
 Cypress.Commands.add('selectProduct', (product) => {
-  // cy.get('.product-item-info .product-item-name .product-item-link').each((el, index, $list) => {
-  //  if (el.text().includes(productName)) {
-  //   cy.log(productName)
-  //  }
-  // })
   cy.contains('.product-item-info', product.name).within(() => {
     cy.wait(1000)
     cy.get('div[aria-label="Size"]')
