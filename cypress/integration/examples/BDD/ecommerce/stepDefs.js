@@ -8,6 +8,7 @@ const homePage = new HomePage()
 const womensPage = new WomensPage()
 const checkoutPage = new CheckOutPage()
 const paymentsPage = new PaymentsPage()
+let itemPrices = []
 
 Given('I open Ecommerce Page and verified homepage elements', () => {
   cy.visit(Cypress.env('url'))
@@ -101,7 +102,7 @@ Then('I add the shipping details for delivery', function () {
   checkoutPage.get_continueBtn().click()
 })
 
-Then('I proceed to checkout and verify purchase successful', function() {
+Then('I proceed to checkout and verify purchase successful', function () {
   cy.url().should('include', 'payment')
   paymentsPage.get_paymenentsPage_title().should('have.text', 'Payment Method')
   paymentsPage
@@ -120,3 +121,27 @@ Then('I proceed to checkout and verify purchase successful', function() {
     .get_emailAddress()
     .should('have.text', this.data.purchaser_details.email)
 })
+
+Then('I verified the total price for Items and Shipping',() => {
+    paymentsPage
+      .get_cartItemPrice()
+      .each(($el) => {
+        const priceText = $el.text().trim().replace('$', '')
+        itemPrices.push(parseFloat(priceText))
+      })
+      .then(() => {
+        const expectedItemsTotal = itemPrices.reduce(
+          (acc, price) => acc + price,0)
+        paymentsPage.get_shippingAmount().then(($shipping) => {
+          const shippingText = $shipping.text().trim().replace('$', '')
+          const shippingCost = parseFloat(shippingText)
+          const expectedTotalWithShipping = expectedItemsTotal + shippingCost
+          paymentsPage.get_totalPrice().then(($total) => {
+            const totalText = $total.text().trim().replace('$', '')
+            const actualTotal = parseFloat(totalText)
+            expect(actualTotal).to.eq(expectedTotalWithShipping)
+          })
+        })
+      })
+  }
+)

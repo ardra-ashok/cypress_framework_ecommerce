@@ -24,6 +24,9 @@ class PaymentsPage{
  get_totalPrice() {
   return cy.get('.grand.totals .price')
  }
+ get_get_shippingAmount() {
+  return cy.get('.shipping .amount .price')
+ }
 
 }
 

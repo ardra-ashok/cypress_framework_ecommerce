@@ -129,7 +129,7 @@ describe('Ecommerce Shopping', function () {
       .then(() => {
         const expectedItemsTotal = itemPrices.reduce((acc, price) => acc + price, 0)
 
-        cy.get('.shipping .amount .price').then(($shipping) => {
+        paymentsPage.get_shippingAmount().then(($shipping) => {
           const shippingText = $shipping.text().trim().replace('$', '');
           const shippingCost = parseFloat(shippingText);
           const expectedTotalWithShipping = expectedItemsTotal + shippingCost;
