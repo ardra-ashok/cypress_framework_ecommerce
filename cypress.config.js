@@ -15,8 +15,8 @@ module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter',
   e2e: {
     setupNodeEvents,
-    // specPattern: 'cypress/integration/examples/*.js', // or '*.feature' if using cucumber
-    specPattern: 'cypress/integration/examples/BDD/*.feature', // or '*.feature' if using cucumber
+    // specPattern: 'cypress/integration/examples/*.js', 
+    specPattern: 'cypress/integration/examples/BDD/*.feature', 
   },
   env: {
     url: 'https://magento.softwaretestingboard.com/',

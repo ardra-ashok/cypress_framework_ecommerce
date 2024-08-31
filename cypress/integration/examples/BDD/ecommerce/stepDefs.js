@@ -26,13 +26,33 @@ Given('I open Ecommerce Page and verified homepage elements', () => {
     expect($el.text().trim()).to.include('Get fit and')
   })
 
-  homePage.get_navTitle().should('have.text', "What's New")
-  homePage.get_navTitle_1().should('have.text', 'Women')
-  homePage.get_navTitle_2().should('have.text', 'Men')
-  homePage.get_navTitle_3().should('have.text', 'Gear')
-  homePage.get_navTitle_4().should('have.text', 'Training')
-  homePage.get_navTitle_5().should('have.text', 'Sale')
-  homePage.get_navTitle().click()
+  homePage.navItems.forEach((item) => {
+    cy.get(item.selector).should('be.visible').and('contain.text', item.text)
+
+    cy.get(item.selector).click()
+    switch (item.text) {
+      case "What's New":
+        cy.url().should('include', '/what-is-new.html')
+        break
+      case 'Women':
+        cy.url().should('include', '/women.html')
+        break
+      case 'Men':
+        cy.url().should('include', '/men.html')
+        break
+      case 'Gear':
+        cy.url().should('include', '/gear.html')
+        break
+      case 'Training':
+        cy.url().should('include', '/training.html')
+        break
+      case 'Sale':
+        cy.url().should('include', '/sale.html')
+        break
+      default:
+        throw new Error(`Unknown nav item text: ${item.text}`)
+    }
+  })
   homePage.get_Footer().should('exist')
   homePage.get_womens().click()
 })
