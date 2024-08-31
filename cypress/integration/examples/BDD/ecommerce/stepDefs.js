@@ -57,7 +57,7 @@ Given('I open Ecommerce Page and verified homepage elements', () => {
   homePage.get_womens().click()
 })
 
-When('I add items to cart', function()  {
+When('I add items to cart', function () {
   cy.url().should('include', 'women')
   womensPage.get_search().type('tee')
   womensPage
@@ -79,7 +79,7 @@ When('I add items to cart', function()  {
     cy.selectProduct(prod)
   })
   womensPage.get_cartButton().click()
-});
+})
 
 Then('I add the shipping details for delivery', function () {
   womensPage.get_proceedToCheckOut().click()
@@ -118,7 +118,15 @@ Then('I add the shipping details for delivery', function () {
           .should('have.text', product.color)
       })
   })
-  checkoutPage.get_shippingCost().check()
+  cy.get(checkoutPage.shipping_method_Tbl, { timeout: 10000 }).should(
+    'be.visible'
+  )
+  cy.contains('tr', 'Table Rate').within(() => {
+    cy.get('input[type="radio"]').check({ force: true })
+  })
+  cy.contains('tr', 'Table Rate').within(() => {
+    cy.get('input[type="radio"]').should('be.checked')
+  })
   checkoutPage.get_continueBtn().click()
 })
 
@@ -142,26 +150,27 @@ Then('I proceed to checkout and verify purchase successful', function () {
     .should('have.text', this.data.purchaser_details.email)
 })
 
-Then('I verified the total price for Items and Shipping',() => {
-    paymentsPage
-      .get_cartItemPrice()
-      .each(($el) => {
-        const priceText = $el.text().trim().replace('$', '')
-        itemPrices.push(parseFloat(priceText))
-      })
-      .then(() => {
-        const expectedItemsTotal = itemPrices.reduce(
-          (acc, price) => acc + price,0)
-        paymentsPage.get_shippingAmount().then(($shipping) => {
-          const shippingText = $shipping.text().trim().replace('$', '')
-          const shippingCost = parseFloat(shippingText)
-          const expectedTotalWithShipping = expectedItemsTotal + shippingCost
-          paymentsPage.get_totalPrice().then(($total) => {
-            const totalText = $total.text().trim().replace('$', '')
-            const actualTotal = parseFloat(totalText)
-            expect(actualTotal).to.eq(expectedTotalWithShipping)
-          })
+Then('I verified the total price for Items and Shipping', () => {
+  paymentsPage
+    .get_cartItemPrice()
+    .each(($el) => {
+      const priceText = $el.text().trim().replace('$', '')
+      itemPrices.push(parseFloat(priceText))
+    })
+    .then(() => {
+      const expectedItemsTotal = itemPrices.reduce(
+        (acc, price) => acc + price,
+        0
+      )
+      paymentsPage.get_shippingAmount().then(($shipping) => {
+        const shippingText = $shipping.text().trim().replace('$', '')
+        const shippingCost = parseFloat(shippingText)
+        const expectedTotalWithShipping = expectedItemsTotal + shippingCost
+        paymentsPage.get_totalPrice().then(($total) => {
+          const totalText = $total.text().trim().replace('$', '')
+          const actualTotal = parseFloat(totalText)
+          expect(actualTotal).to.eq(expectedTotalWithShipping)
         })
       })
-  }
-)
+    })
+})

@@ -32,9 +32,7 @@ class CheckOutPage {
  get_phoneInput() {
   return cy.get("input[name='telephone']")
  }
- get_shippingCost() {
-  return cy.get('input[value="flatrate_flatrate"]')
- }
+ shipping_method_Tbl = '.table-checkout-shipping-method';
  get_continueBtn(){
   return cy.get('.continue')
  }

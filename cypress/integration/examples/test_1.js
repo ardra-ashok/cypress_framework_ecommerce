@@ -139,7 +139,17 @@ describe('Ecommerce Shopping', function () {
             .should('have.text', product.color)
         })
     })
-    checkoutPage.get_shippingCost().check()
+    // checkoutPage.get_shippingCost().check()
+
+    cy.get(checkoutPage.shipping_method_Tbl, { timeout: 10000 }).should(
+      'be.visible'
+    )
+    cy.contains('tr', 'Table Rate').within(() => {
+      cy.get('input[type="radio"]').check({ force: true })
+    })
+     cy.contains('tr', 'Table Rate').within(() => {
+       cy.get('input[type="radio"]').should('be.checked') 
+     })
     checkoutPage.get_continueBtn().click()
     cy.url().should('include', 'payment')
     paymentsPage.get_cartItemPrice()

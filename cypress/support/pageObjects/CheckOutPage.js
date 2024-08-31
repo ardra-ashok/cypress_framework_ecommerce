@@ -26,18 +26,16 @@ class CheckOutPage {
   get_zipCode() {
     return cy.get('input[name="postcode"]')
   }
- get_countrySelect() {
-  return cy.get("select[name='country_id']")
- }
- get_phoneInput() {
-  return cy.get("input[name='telephone']")
- }
- get_shippingCost() {
-  return cy.get('input[value="flatrate_flatrate"]')
- }
- get_continueBtn(){
-  return cy.get('.continue')
- }
+  get_countrySelect() {
+    return cy.get("select[name='country_id']")
+  }
+  get_phoneInput() {
+    return cy.get("input[name='telephone']")
+  }
+  shipping_method_Tbl = '.table-checkout-shipping-method'
+  get_continueBtn() {
+    return cy.get('.continue')
+  }
   get_orderSummary_title() {
     return cy.get('.opc-block-summary span.title')
   }
@@ -59,8 +57,6 @@ class CheckOutPage {
   get_productColor() {
     return cy.get('.label:nth-of-type(2)')
   }
-
 }
-
 
 export default CheckOutPage
