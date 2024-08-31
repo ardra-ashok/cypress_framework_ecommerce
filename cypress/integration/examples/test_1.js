@@ -12,11 +12,11 @@ describe('Ecommerce Shopping', function () {
     })
   })
   after(() => {
-    cy.log('All tests are done. ');
+    cy.log('All tests are done. ')
     Cypress.runner.stop()
-  });
+  })
   it('Verify Home Page Functionality', function () {
-    let itemPrices = [];
+    let itemPrices = []
     const homePage = new HomePage()
     const updatesPage = new UpdatesPage()
     const womensPage = new WomensPage()
@@ -39,34 +39,32 @@ describe('Ecommerce Shopping', function () {
       cy.log($el.text())
       expect($el.text().trim()).to.include('Get fit and')
     })
-    
+
     homePage.navItems.forEach((item) => {
-      cy.get(item.selector)
-        .should('be.visible')
-        .and('contain.text', item.text)
-      
-      cy.get(item.selector).click();
+      cy.get(item.selector).should('be.visible').and('contain.text', item.text)
+
+      cy.get(item.selector).click()
       switch (item.text) {
         case "What's New":
-          cy.url().should('include', '/what-is-new.html');
-          break;
+          cy.url().should('include', '/what-is-new.html')
+          break
         case 'Women':
-          cy.url().should('include', '/women.html');
-          break;
+          cy.url().should('include', '/women.html')
+          break
         case 'Men':
-          cy.url().should('include', '/men.html');
-          break;
+          cy.url().should('include', '/men.html')
+          break
         case 'Gear':
-          cy.url().should('include', '/gear.html');
-          break;
+          cy.url().should('include', '/gear.html')
+          break
         case 'Training':
-          cy.url().should('include', '/training.html');
-          break;
+          cy.url().should('include', '/training.html')
+          break
         case 'Sale':
-          cy.url().should('include', '/sale.html');
-          break;
+          cy.url().should('include', '/sale.html')
+          break
         default:
-          throw new Error(`Unknown nav item text: ${item.text}`);
+          throw new Error(`Unknown nav item text: ${item.text}`)
       }
     })
     homePage.get_Footer().should('exist')
@@ -147,23 +145,27 @@ describe('Ecommerce Shopping', function () {
     cy.contains('tr', 'Table Rate').within(() => {
       cy.get('input[type="radio"]').check({ force: true })
     })
-     cy.contains('tr', 'Table Rate').within(() => {
-       cy.get('input[type="radio"]').should('be.checked') 
-     })
+    cy.contains('tr', 'Table Rate').within(() => {
+      cy.get('input[type="radio"]').should('be.checked')
+    })
     checkoutPage.get_continueBtn().click()
     cy.url().should('include', 'payment')
-    paymentsPage.get_cartItemPrice()
+    paymentsPage
+      .get_cartItemPrice()
       .each(($el) => {
-        const priceText = $el.text().trim().replace('$', '') 
+        const priceText = $el.text().trim().replace('$', '')
         itemPrices.push(parseFloat(priceText))
       })
       .then(() => {
-        const expectedItemsTotal = itemPrices.reduce((acc, price) => acc + price, 0)
+        const expectedItemsTotal = itemPrices.reduce(
+          (acc, price) => acc + price,
+          0
+        )
 
         paymentsPage.get_shippingAmount().then(($shipping) => {
-          const shippingText = $shipping.text().trim().replace('$', '');
-          const shippingCost = parseFloat(shippingText);
-          const expectedTotalWithShipping = expectedItemsTotal + shippingCost;
+          const shippingText = $shipping.text().trim().replace('$', '')
+          const shippingCost = parseFloat(shippingText)
+          const expectedTotalWithShipping = expectedItemsTotal + shippingCost
           paymentsPage.get_totalPrice().then(($total) => {
             const totalText = $total.text().trim().replace('$', '')
             const actualTotal = parseFloat(totalText)
@@ -171,6 +173,9 @@ describe('Ecommerce Shopping', function () {
           })
         })
       })
+
+    paymentsPage.get_shippingInfo().should('be.visible')
+    paymentsPage.get_shippingInfo().should('contain.text', 'Table Rate')
 
     paymentsPage
       .get_paymenentsPage_title()

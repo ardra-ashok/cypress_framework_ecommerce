@@ -27,6 +27,10 @@ class PaymentsPage {
   get_shippingAmount() {
     return cy.get('.shipping .amount .price')
   }
+  get_shippingInfo() {
+    return cy.get('.shipping-information-content');
+  }
+  
 }
 
 export default PaymentsPage

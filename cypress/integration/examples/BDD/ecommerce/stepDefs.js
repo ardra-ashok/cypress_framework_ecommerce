@@ -172,5 +172,7 @@ Then('I verified the total price for Items and Shipping', () => {
           expect(actualTotal).to.eq(expectedTotalWithShipping)
         })
       })
+      paymentsPage.get_shippingInfo().should('be.visible')
+      paymentsPage.get_shippingInfo().should('contain.text', 'Table Rate')
     })
 })
